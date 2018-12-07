@@ -1,0 +1,17 @@
+<button type="button" (click)='shuffleCards()'>Shuffle Cards</button>
+<button type="button" (click)='dealCards()'>Deal Cards</button>
+<div class="players">
+  <div class="player" *ngFor="let player of players">
+    <div>
+        {{ player.playerName }}
+    </div>
+    <div class="hand" *ngIf="player.hand.playerHand.length > 0">
+      <ul class="cards">
+        <li class="card" *ngFor="let card of player.hand.playerHand" [ngClass]="{ 'red': card.cardColor === 'red' }">{{ card.cardName }}{{ card.cardSuit }}</li>
+    </ul>
+    <div *ngIf="player.handName !== ''">{{ player.handName }}</div>
+    <div *ngIf="player.handName === ''">{{ player.highCard }}</div>
+    <div *ngIf="winner === player.playerName">{{player.playerName}} wins!</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+.players {
+  display: flex;
+  justify-content: space-around;
+}
+
+.playerOne {
+  outline: 1px solid teal;
+}
+
+.playerTwo {
+  outline: 1px solid orangered;
+}
+
+.cards {
+  outline: 1px solid red;
+  list-style: none;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.card {
+  padding: 1rem;
+}
+
+.red {
+  color: red;
+}
