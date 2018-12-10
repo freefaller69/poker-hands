@@ -23,7 +23,8 @@ export class CardsService {
           cardSuit: suit,
           cardValue: index + 2,
           cardColor: cardColor,
-          uniqueName: cardId + suit
+          uniqueName: cardId + suit,
+          cardInDeck: true
         };
         this.deck.push(newCard);
       });
@@ -65,9 +66,9 @@ export class CardsService {
 
     let comparison = 0;
     if (handA > handB) {
-      comparison = 1;
-    } else if (handA < handB) {
       comparison = -1;
+    } else if (handA < handB) {
+      comparison = 1;
     }
     return comparison;
   }
@@ -78,15 +79,15 @@ export class CardsService {
 
     let comparison = 0;
     if (handA > handB) {
-      comparison = 1;
-    } else if (handA < handB) {
       comparison = -1;
+    } else if (handA < handB) {
+      comparison = 1;
     }
     return comparison;
   }
 
-  evaluateHand(player) {
-    const activeHand = player.hand.playerHand;
+  evaluateHand(hand) {
+    const activeHand = hand;
     const values = activeHand.map(card => card.cardValue);
     const suitCount = this.groupBy(activeHand, 'cardSuit');
     const valueCount = this.groupBy(activeHand, 'cardValue');
@@ -107,49 +108,50 @@ export class CardsService {
           isFlush = true;
         }
         if (isStraight && isFlush) {
-          // isStraightFlush = true;
           if (highCard === 14) {
-            player.handName = 'Royal Flush';
-            player.handValue = 100;
+            activeHand.handName = 'Royal Flush';
+            activeHand.handValue = 1000;
           } else {
-            player.handName = 'Straight Flush';
-            player.handValue = 80;
+            activeHand.handName = 'Straight Flush';
+            activeHand.handValue = 800 + highCard;
           }
         } else if (isFlush) {
-          player.handName = 'Flush';
-          player.handValue = 50;
-          player.highCard = highCard;
+          activeHand.handName = 'Flush';
+          activeHand.handValue = 500 + highCard;
         } else if (isStraight) {
-          player.handName = 'Straight';
-          player.handValue = 40;
-          player.highCard = highCard;
+          activeHand.handName = 'Straight';
+          activeHand.handValue = 400 + highCard;
         } else {
-          player.highCard = highCard;
+          activeHand.handName = 'High Card';
+          activeHand.handValue = 0 + highCard;
         }
         break;
 
       case 4:
-        player.handName = 'Pair';
-        player.handValue = 10;
+        activeHand.handName = 'Pair';
+        activeHand.handValue = 100 + highCard;
         break;
 
       case 3:
         if (entries.find(item => item[1] === 3)) {
-          player.handName = 'Three of a Kind';
-          player.handValue = 30;
+          activeHand.handName = 'Three of a Kind';
+          activeHand.highCard = parseInt(entries.find(item => item[1] === 3)[0]);
+          activeHand.handValue = 300 + activeHand.highCard;
         } else if (entries.find(item => item[1] === 2)) {
-          player.handName = 'Two Pair';
-          player.handValue = 20;
+          activeHand.handName = 'Two Pair';
+          activeHand.handValue = 200 + highCard;
         }
         break;
 
       case 2:
         if (entries.find(item => item[1] === 4)) {
-          player.handName = 'Four of a Kind';
-          player.handValue = 70;
+          activeHand.handName = 'Four of a Kind';
+          activeHand.highCard = parseInt(entries.find(item => item[1] === 4)[0]);
+          activeHand.handValue = 700 + activeHand.highCard;
         } else if (entries.find(item => item[1] === 3)) {
-          player.handName = 'Full House';
-          player.handValue = 60;
+          activeHand.handName = 'Full House';
+          activeHand.highCard = parseInt(entries.find(item => item[1] === 3)[0]);
+          activeHand.handValue = 600 + activeHand.highCard;
         }
         break;
       default:

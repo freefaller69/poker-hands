@@ -1,4 +1,4 @@
-import { CardsService } from './cards.service';
+import { CardsService } from '../shared/cards.service';
 import { Component, OnInit } from '@angular/core';
 import { Player } from '../player';
 import { PlayerService } from '../player.service';
@@ -46,7 +46,7 @@ export class DeckComponent implements OnInit {
 
     this.players.forEach(player => {
       player.hand.playerHand.sort(this.cardsService.sortHand);
-      this.cardsService.evaluateHand(player);
+      this.cardsService.evaluateHand(player.hand.playerHand);
       this.ranks.push(player);
     });
     const tieCheck = this.cardsService.groupBy(this.ranks, 'handValue');

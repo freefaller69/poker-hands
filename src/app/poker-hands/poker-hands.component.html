@@ -1,0 +1,37 @@
+<div class="cards">
+  <app-card
+    class="card"
+    *ngFor="let card of deck; index as deckIndex"
+    [ngClass]="{ 'red': (card.cardColor === 'red' && card.cardInDeck === true), 'dealt': card.cardInDeck === false }"
+    (click)="drawCard(card)"
+    [card]='card'>
+  </app-card>
+</div>
+<div class="evaluator">
+  <div class="selecting">
+    <div class="sortedCards">
+      <app-card
+        class="card"
+        *ngFor="let card of hand; index as i"
+        [ngClass]="{ 'red': card.cardColor === 'red' }"
+        (click)="dropCard(i)"
+        [card]='card'>
+      </app-card>
+    </div>
+    <button class="btn" *ngIf="this.hand.length === 5" (click)="onSaveHand()">Save hand</button>
+  </div>
+  <div class="ranks">
+    <div class="hand" *ngFor="let hand of ranks; index as i">
+      <div class="sortedCards">
+          <app-card
+          class="card"
+          *ngFor="let card of hand; index as i"
+          [ngClass]="{ 'red': card.cardColor === 'red' }"
+          [card]='card'>
+        </app-card>
+      </div>
+      <div class="playerName">Player {{ hand.playerNum }}<span *ngIf="i === 0 && ranks.length > 1"> has the best hand.</span></div>
+      <div class="handName">{{ hand.handName }}</div>
+    </div>
+  </div>
+</div>
