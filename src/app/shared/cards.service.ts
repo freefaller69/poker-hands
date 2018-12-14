@@ -47,43 +47,50 @@ export class CardsService {
     return array;
   };
 
-  sortHand(a, b) {
-    const cardA = a.cardValue;
-    const cardB = b.cardValue;
+  sort(item, sortType) {
+    console.log('item', item);
+    console.log('sortType', sortType);
+    item.sortType = sortType;
+    item.sort(this.sortItems);
+  }
+
+  sortItems(a, b) {
+    const itemA = a.sortType;
+    const itemB = b.sortType;
+    console.log('itemA', itemA);
+    console.log('itemB', itemB);
 
     let comparison = 0;
-    if (cardA > cardB) {
+    if (itemA > itemB) {
       comparison = 1;
-    } else if (cardA < cardB) {
+    } else if (itemA < itemB) {
       comparison = -1;
     }
     return comparison;
   }
 
-  rankHands(a, b) {
-    const handA = a.handValue;
-    const handB = b.handValue;
+  compareValues(key, order = 'asc') {
+    return function(a, b) {
+      if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+        // property doesn't exist on either object
+        return 0;
+      }
 
-    let comparison = 0;
-    if (handA > handB) {
-      comparison = -1;
-    } else if (handA < handB) {
-      comparison = 1;
-    }
-    return comparison;
-  }
+      const varA = (typeof a[key] === 'string') ?
+        a[key].toUpperCase() : a[key];
+      const varB = (typeof b[key] === 'string') ?
+        b[key].toUpperCase() : b[key];
 
-  rankHighCard(a, b) {
-    const handA = a.highCard;
-    const handB = b.highCard;
-
-    let comparison = 0;
-    if (handA > handB) {
-      comparison = -1;
-    } else if (handA < handB) {
-      comparison = 1;
-    }
-    return comparison;
+      let comparison = 0;
+      if (varA > varB) {
+        comparison = 1;
+      } else if (varA < varB) {
+        comparison = -1;
+      }
+      return (
+        (order === 'desc') ? (comparison * -1) : comparison
+      );
+    };
   }
 
   evaluateHand(hand) {
