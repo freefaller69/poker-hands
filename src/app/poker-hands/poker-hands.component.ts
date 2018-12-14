@@ -40,16 +40,16 @@ export class PokerHandsComponent implements OnInit {
   }
 
   onSaveHand() {
-    this.hand.sort(this.cardsService.sortHand);
+    this.hand.sort(this.cardsService.compareValues('cardValue'));
     this.cardsService.evaluateHand(this.hand);
     this.ranks.push(this.hand);
     this.ranks[this.ranks.length - 1].playerNum = this.ranks.length;
     this.hand = [];
     const tieCheck = this.cardsService.groupBy(this.ranks, 'handValue');
     if (Object.keys(tieCheck).length === 1) {
-      this.ranks.sort(this.cardsService.rankHighCard);
+      this.ranks.sort(this.cardsService.compareValues('highCard'));
     } else {
-      this.ranks.sort(this.cardsService.rankHands);
+      this.ranks.sort(this.cardsService.compareValues('handValue', 'desc'));
     }
   }
 

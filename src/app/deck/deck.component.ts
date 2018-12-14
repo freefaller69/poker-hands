@@ -45,15 +45,15 @@ export class DeckComponent implements OnInit {
     }
 
     this.players.forEach(player => {
-      player.hand.playerHand.sort(this.cardsService.sortHand);
+      player.hand.playerHand.sort(this.cardsService.compareValues('cardValue'));
       this.cardsService.evaluateHand(player.hand.playerHand);
       this.ranks.push(player);
     });
     const tieCheck = this.cardsService.groupBy(this.ranks, 'handValue');
     if (Object.keys(tieCheck).length === 1) {
-      this.ranks.sort(this.cardsService.rankHighCard);
+      this.ranks.sort(this.cardsService.compareValues('highCard'));
     } else {
-      this.ranks.sort(this.cardsService.rankHands);
+      this.ranks.sort(this.cardsService.compareValues('handValue', 'desc'));
     }
     this.winner = this.ranks[this.ranks.length - 1].playerName;
   }
